@@ -14,9 +14,9 @@ namespace API.Controllers.Pessoa
 
             builder.MapPost("pessoa", InsertPessoa);
 
-            builder.MapPut("pessoa{id}", UpdatePessoa);
+            builder.MapPut("pessoa/{id}", UpdatePessoa);
 
-            builder.MapDelete("pessoa{id}", DeletePessoa);
+            builder.MapDelete("pessoa/{id}", DeletePessoa);
 
             return builder;
         }
