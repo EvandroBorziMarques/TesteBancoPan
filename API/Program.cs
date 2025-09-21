@@ -18,6 +18,15 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll",
+        policy => policy
+            .AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader());
+});
+
 builder.Services.AddPersistencia(builder.Configuration);
 builder.Services.AddApplication();
 builder.Services.AddHttpClient<ICepService, ViaCepService>();
@@ -34,7 +43,7 @@ if (app.Environment.IsDevelopment())
 
     app.ApplyMigration();
 
-    app.UseCors(x => x.WithOrigins("https://localhost:4200", "http://localhost:4200").AllowAnyMethod().AllowAnyHeader().AllowCredentials());
+    app.UseCors("AllowAll");
 }
 
 app.UseHttpsRedirection();

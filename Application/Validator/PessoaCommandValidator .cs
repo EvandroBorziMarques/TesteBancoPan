@@ -62,8 +62,7 @@ public class PessoaCommandValidator<T> : AbstractValidator<T> where T : IPessoaC
             .MaximumLength(256).WithMessage("Localidade deve ter no máximo 256 caracteres.");        
 
         RuleFor(x => x.Uf)
-            .NotEmpty().WithMessage("UF é obrigatória.")
-            .Matches(@"^[A-Z]{2}$").WithMessage("UF deve ter 2 letras maiúsculas.");
+            .MaximumLength(2).WithMessage("UF deve ter 2 letras maiúsculas.");
 
         RuleFor(x => x.Estado)
             .MaximumLength(256).WithMessage("Estado deve ter no máximo 256 caracteres.");
@@ -78,7 +77,7 @@ public class PessoaCommandValidator<T> : AbstractValidator<T> where T : IPessoaC
             .MaximumLength(50).WithMessage("Gia deve ter no máximo 50 caracteres.");
 
         RuleFor(x => x.Ddd)
-            .Matches(@"^\d{3}$").WithMessage("DDD deve conter 3 dígitos numéricos.");
+            .MaximumLength(3).WithMessage("DDD deve ter 2 letras maiúsculas.");
 
         RuleFor(x => x.Siafi)
             .MaximumLength(50).WithMessage("Siafi deve ter no máximo 50 caracteres.");

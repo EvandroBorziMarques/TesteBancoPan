@@ -1,0 +1,127 @@
+<p-toolbar class="mb-3">
+  <div class="p-toolbar-group-left">
+    <p-button label="Novo Item" icon="pi pi-plus" (click)="openNew()"></p-button>
+  </div>
+</p-toolbar>
+
+<!-- Tabela de Itens -->
+<p-table [value]="items" [paginator]="true" [rows]="5" [responsiveLayout]="'scroll'">
+  <ng-template pTemplate="header">
+    <tr>
+      <th pSortableColumn="nome">Nome <p-sortIcon field="nome"></p-sortIcon></th>
+      <th pSortableColumn="nome">Telefone <p-sortIcon field="telefone"></p-sortIcon></th>
+      <th pSortableColumn="nome">CPF <p-sortIcon field="cpf"></p-sortIcon></th>
+      <th pSortableColumn="nome">Data Nascimento <p-sortIcon field="dataNascimento"></p-sortIcon></th>
+      <th pSortableColumn="nome">CNPJ <p-sortIcon field="cnpj"></p-sortIcon></th>
+      <th pSortableColumn="nome">Razao Social <p-sortIcon field="razaoSocial"></p-sortIcon></th>
+      <th pSortableColumn="nome">CEP <p-sortIcon field="endereco.cep"></p-sortIcon></th>
+      <th pSortableColumn="nome">Logradouro <p-sortIcon field="endereco.logradouro"></p-sortIcon></th>
+      <th pSortableColumn="nome">Complemento <p-sortIcon field="endereco.complemento"></p-sortIcon></th>
+      <th pSortableColumn="nome">Bairro <p-sortIcon field="endereco.bairro"></p-sortIcon></th>
+      <th pSortableColumn="nome">UF <p-sortIcon field="endereco.uf"></p-sortIcon></th>
+      <th pSortableColumn="nome">Estado <p-sortIcon field="endereco.estado"></p-sortIcon></th>
+      <th>Ações</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-item>
+    <tr>
+      <td>{{ item.nome }}</td>
+      <td>{{ item.telefone }}</td>
+      <td>{{ item.cpf }}</td>
+      <td>{{ item.dataNascimento }}</td>
+      <td>{{ item.cnpj }}</td>
+      <td>{{ item.razaoSocial }}</td>
+      <td>{{ item.endereco.cep }}</td>
+      <td>{{ item.endereco.logradouro }}</td>
+      <td>{{ item.endereco.complemento }}</td>
+      <td>{{ item.endereco.bairro }}</td>
+      <td>{{ item.endereco.uf }}</td>
+      <td>{{ item.endereco.estado }}</td>
+      <td>
+        <p-button icon="pi pi-pencil" styleClass="p-button-rounded p-button-success p-mr-2" (click)="editItem(item)"></p-button>
+        <p-button icon="pi pi-trash" styleClass="p-button-rounded p-button-danger" (click)="confirmDelete(item)"></p-button>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+
+<!-- Dialog para Criar/Editar -->
+<p-dialog header="{{ item.id ? 'Editar Item' : 'Novo Item' }}" [(visible)]="itemDialog" [modal]="true" [style]="{width: '400px'}">
+  <div class="p-fluid">
+    <div class="p-field">
+      <label for="nome">Nome</label>
+      <input id="nome" type="text" pInputText [(ngModel)]="item.nome" required />
+    </div>
+
+    <div class="p-field">
+      <label for="telefone">Telefone</label>
+      <input id="telefone" type="text" pInputText [(ngModel)]="item.telefone" />
+    </div>
+
+    <div class="p-field">
+      <label for="tipoPessoa">TipoPessoa</label>
+      <input id="tipoPessoa" type="text" pInputText [(ngModel)]="item.tipoPessoa" required />
+    </div>
+
+    <div class="p-field">
+      <label for="cpf">CPF</label>
+      <input id="cpf" type="text" pInputText [(ngModel)]="item.cpf" />
+    </div>
+
+    <div class="p-field">
+      <label for="dataNascimento">Data de Nascimento</label>
+      <input id="dataNascimento" type="text" pInputText [(ngModel)]="item.dataNascimento" />
+    </div>
+
+    <div class="p-field">
+      <label for="cnpj">CNPJ</label>
+      <input id="cnpj" type="text" pInputText [(ngModel)]="item.cnpj" />
+    </div>
+
+    <div class="p-field">
+      <label for="razaoSocial">Razão Social</label>
+      <input id="razaoSocial" type="text" pInputText [(ngModel)]="item.razaoSocial" />
+    </div>
+
+    <div class="p-field">
+      <label for="cep">CEP</label>
+      <input id="cep" type="text" pInputText [(ngModel)]="item.endereco.cep" required />
+    </div>
+
+    <div class="p-field">
+      <label for="logradouro">Logradouro</label>
+      <input id="logradouro" type="text" pInputText [(ngModel)]="item.endereco.logradouro" required />
+    </div>
+
+    <div class="p-field">
+      <label for="complemento">Complemento</label>
+      <input id="complemento" type="text" pInputText [(ngModel)]="item.endereco.complemento" required />
+    </div>
+
+    <div class="p-field">
+      <label for="bairro">Bairro</label>
+      <input id="bairro" type="text" pInputText [(ngModel)]="item.endereco.bairro" required />
+    </div>
+
+    <div class="p-field">
+      <label for="uf">UF</label>
+      <input id="uf" type="text" pInputText [(ngModel)]="item.endereco.uf" required />
+    </div>
+
+    <div class="p-field">
+      <label for="estado">Estado</label>
+      <input id="estado" type="text" pInputText [(ngModel)]="item.endereco.estado" required />
+    </div>
+
+  </div>
+  <p-footer>
+    <p-button label="Salvar" icon="pi pi-check" (click)="saveItem()" autofocus></p-button>
+    <p-button label="Cancelar" icon="pi pi-times" (click)="itemDialog=false" styleClass="p-button-text"></p-button>
+  </p-footer>
+</p-dialog>
+
+<!-- Dialog de confirmação de exclusão -->
+<p-confirmDialog></p-confirmDialog>
+
+<!-- Toast para mensagens -->
+<p-toast></p-toast>
