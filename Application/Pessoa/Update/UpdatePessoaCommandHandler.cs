@@ -1,10 +1,9 @@
-﻿using Application.Pessoa.Insert;
+﻿using MediatR;
+using Domain.Ports;
 using Domain.Abstraction;
+using FluentValidation;
 using Domain.Entities.PessoaFisica;
 using Domain.Entities.PessoaJuridica;
-using Domain.Ports;
-using FluentValidation;
-using MediatR;
 
 namespace Application.Pessoa.Update
 {

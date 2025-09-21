@@ -25,7 +25,6 @@ export class ApiService {
   }
 
   deleteItem(id: string): Observable<any> {
-    console.log(id)
     return this.http.delete(`${this.baseUrl}/pessoa/${id}`);
   }
 

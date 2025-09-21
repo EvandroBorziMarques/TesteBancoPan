@@ -30,6 +30,7 @@ export class Items implements OnInit {
           id: item.id,
           nome: item.nome,
           telefone: item.telefone,
+          tipoPessoa: item.tipoPessoa,
           cpf: item.cpf,
           dataNascimento: this.formatDate(item.dataNascimento),
           cnpj: item.cnpj,
@@ -60,7 +61,7 @@ export class Items implements OnInit {
           this.itemDialog = false;
           this.showSuccess('Item atualizado com sucesso!');
         },
-        error: err => this.showError(err)
+        error: err => this.showError(err.error[0].errorMessage)
       });
     } else {
       this.api.createItem(this.item).subscribe({
@@ -69,7 +70,7 @@ export class Items implements OnInit {
           this.itemDialog = false;
           this.showSuccess('Item criado com sucesso!');
         },
-        error: err => this.showError(err)
+        error: err => this.showError(err.error[0].errorMessage)
       });
     }
   }
