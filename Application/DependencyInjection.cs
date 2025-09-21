@@ -1,4 +1,7 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using FluentValidation;
+using Application.Pessoa.Insert;
+using Application.Pessoa.Update;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Application
 {
@@ -10,6 +13,9 @@ namespace Application
             {
                 configuration.RegisterServicesFromAssemblies(typeof(DependencyInjection).Assembly);
             });
+
+            services.AddScoped<IValidator<InsertPessoaCommand>, PessoaCommandValidator<InsertPessoaCommand>>();
+            services.AddScoped<IValidator<UpdatePessoaCommand>, PessoaCommandValidator<UpdatePessoaCommand>>();
 
             return services;
         }

@@ -10,8 +10,8 @@ namespace Domain.Entities.PessoaFisica
         private PessoaFisica(Guid id, string nome, string? telefone, TipoPessoa tipoPessoa, Endereco.Endereco? endereco, string? cpf, DateTime? dataNascimento)
         : base(id, nome, telefone, tipoPessoa, endereco)
         {
-            Cpf = cpf;
-            DataNascimento = dataNascimento;
+            SetCpf(cpf);
+            SetDataNascimento(dataNascimento);
         }
 
         [MaxLength(11)]
@@ -31,6 +31,20 @@ namespace Domain.Entities.PessoaFisica
             TipoPessoa = tipoPessoa;
             Endereco = endereco;
             Cpf = cpf;
+            DataNascimento = dataNascimento;
+        }        
+
+        private void SetCpf(string? cpf)
+        {
+            if (!string.IsNullOrEmpty(cpf) && cpf.Length != 11)
+                throw new ArgumentException("CPF deve ter 11 caracteres.");
+            Cpf = cpf;
+        }
+
+        private void SetDataNascimento(DateTime? dataNascimento)
+        {
+            if (dataNascimento.HasValue && dataNascimento.Value > DateTime.Now)
+                throw new ArgumentException("Data de nascimento não pode ser no futuro.");
             DataNascimento = dataNascimento;
         }
     }

@@ -19,10 +19,17 @@ namespace Domain.Abstraction
         protected Pessoa(Guid id, string nome, string? telefone, TipoPessoa tipoPessoa, Endereco? endereco)
         {
             Id = id;
-            Nome = nome;
+            SetNome(nome);
             Telefone = telefone;
             TipoPessoa = tipoPessoa;
             Endereco = endereco;
+        }
+
+        private void SetNome(string nome)
+        {
+            if (string.IsNullOrWhiteSpace(nome))
+                throw new ArgumentException("Nome é obrigatório.");
+            Nome = nome;
         }
     }    
 }

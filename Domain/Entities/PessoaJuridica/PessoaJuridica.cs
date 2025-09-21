@@ -10,15 +10,15 @@ namespace Domain.Entities.PessoaJuridica
         private PessoaJuridica(Guid id, string nome, string? telefone, TipoPessoa tipoPessoa, Endereco.Endereco endereco, string? cnpj, string? razaoSocial)
         : base(id, nome, telefone, tipoPessoa, endereco)
         {
-            Cnpj = cnpj;
-            RazaoSocial = razaoSocial;
+            SetCnpj(cnpj);
+            SetRazaoSocial(razaoSocial);
         }
 
         [MaxLength(14)]
-        public string Cnpj { get; private set; }
+        public string? Cnpj { get; private set; }
 
         [MaxLength(256)]
-        public string RazaoSocial { get; private set; }
+        public string? RazaoSocial { get; private set; }
 
         public static PessoaJuridica Create(string nome, string? telefone, TipoPessoa tipoPessoa, Endereco.Endereco endereco,  string? cnpj, string? razaosocial)
         {
@@ -33,6 +33,20 @@ namespace Domain.Entities.PessoaJuridica
             Endereco = endereco;
             Cnpj = cnpj;
             RazaoSocial = razaosocial;
+        }
+
+        private void SetCnpj(string? cnpj)
+        {
+            if (!string.IsNullOrEmpty(cnpj) && cnpj.Length != 14)
+                throw new ArgumentException("CNPJ deve ter 14 caracteres.");
+            Cnpj = cnpj;
+        }
+
+        private void SetRazaoSocial(string? razaoSocial)
+        {
+            if (razaoSocial.Length > 256)
+                throw new ArgumentException("Data de nascimento não pode ser no futuro.");
+            RazaoSocial = razaoSocial;
         }
     }    
 }

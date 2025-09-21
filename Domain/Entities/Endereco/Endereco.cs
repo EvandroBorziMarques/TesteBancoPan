@@ -25,7 +25,7 @@ namespace Domain.Entities.Endereco
 
         public Guid Id { get; set; }
 
-        [MaxLength(10)]
+        [MaxLength(8)]
         public string Cep { get; set; }
 
         [MaxLength(256)]

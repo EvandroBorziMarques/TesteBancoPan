@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using Application.Abstraction;
+using MediatR;
 
 namespace Application.Pessoa.Update
 {
@@ -23,5 +24,5 @@ namespace Application.Pessoa.Update
         string Ibge,
         string Gia,
         string Ddd,
-        string Siafi) : IRequest<PessoaResponse>;
+        string Siafi) : IRequest<PessoaResponse>, IPessoaCommand;
 }

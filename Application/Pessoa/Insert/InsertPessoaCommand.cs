@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Application.Abstraction;
 
 namespace Application.Pessoa.Insert
 {
@@ -22,5 +23,5 @@ namespace Application.Pessoa.Insert
         string Ibge,
         string Gia,
         string Ddd,
-        string Siafi) : IRequest<PessoaResponse>;
+        string Siafi) : IRequest<PessoaResponse>, IPessoaCommand;
 }

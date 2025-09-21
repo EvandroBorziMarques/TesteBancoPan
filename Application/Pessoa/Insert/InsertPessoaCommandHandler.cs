@@ -1,8 +1,9 @@
-﻿using Domain.Abstraction;
+﻿using MediatR;
+using Domain.Ports;
+using FluentValidation;
+using Domain.Abstraction;
 using Domain.Entities.PessoaFisica;
 using Domain.Entities.PessoaJuridica;
-using Domain.Ports;
-using MediatR;
 
 namespace Application.Pessoa.Insert
 {
@@ -10,15 +11,22 @@ namespace Application.Pessoa.Insert
     {
         private readonly IPessoaRepository _pessoaRepository;
         private readonly ICepService _cepService;
-
-        public InsertPessoaCommandHandler(IPessoaRepository pessoaRepository, ICepService cepService)
+        private readonly IValidator<InsertPessoaCommand> _validator;
+        
+        public InsertPessoaCommandHandler(IPessoaRepository pessoaRepository, ICepService cepService, IValidator<InsertPessoaCommand> validator)
         {
             _pessoaRepository = pessoaRepository;
             _cepService = cepService;
+            _validator = validator;
         }
 
         public async Task<PessoaResponse> Handle(InsertPessoaCommand request, CancellationToken cancellationToken)
         {
+            var validationResult = await _validator.ValidateAsync(request, cancellationToken);
+
+            if (!validationResult.IsValid)
+                throw new ValidationException(validationResult.Errors);
+
             Domain.Abstraction.Pessoa pessoa;
             Domain.Entities.Endereco.Endereco endereco;
 
@@ -43,11 +51,16 @@ namespace Application.Pessoa.Insert
                 endereco = Domain.Entities.Endereco.Endereco.Create(request.Cep, request.Logradouro, request.Complemento, request.Unidade, request.Bairro, request.Localidade, request.Uf, request.Estado, request.Regiao, request.Ibge, request.Gia, request.Ddd, request.Siafi);
 
             if (request.TipoPessoa.Equals((int)TipoPessoa.Fisica))
+
                 pessoa = PessoaFisica.Create(request.Nome, request.Telefone, Domain.Abstraction.TipoPessoa.Fisica, endereco, request.Cpf, Convert.ToDateTime(request.DataNascimento));
+
             else
                 pessoa = PessoaJuridica.Create(request.Nome, request.Telefone, Domain.Abstraction.TipoPessoa.Juridica, endereco, request.Cnpj, request.RazaoSocial);
 
             var pessoaInserida = await _pessoaRepository.Insert(pessoa);
+
+            if (pessoaInserida.Equals(null))
+                return null;
 
             return new PessoaResponse
             {

@@ -26,7 +26,10 @@ namespace API.Controllers.Pessoa
             var query = new GetAllPessoasQuery();
             var result = await sender.Send(query, cancellationToken);
 
-            return Results.Ok(result);
+            if (result is null)
+                return Results.NotFound("Pessoas não encontradas!");
+
+            return Results.Ok(result) ;
         }
 
         public static async Task<IResult> InsertPessoa(AddPessoaRequest request,ISender sender, CancellationToken cancellationToken)
@@ -54,9 +57,20 @@ namespace API.Controllers.Pessoa
                 request.Endereco.Siafi
             );
 
-            var result = await sender.Send(query, cancellationToken);
+            try
+            {
+                var result = await sender.Send(query, cancellationToken);
 
-            return Results.Ok(result);
+                if (result is null)
+                    return Results.BadRequest($"Houve um problema ao inserir {request.Nome}");
+
+                return Results.Created($"/pessoas/{result.Id}", result);
+            }
+            catch (FluentValidation.ValidationException error)
+            {
+                var errors = error.Errors.Select(e => new { e.PropertyName, e.ErrorMessage });
+                return Results.BadRequest(errors);
+            }
         }
 
         public static async Task<IResult> UpdatePessoa(Guid id, AddPessoaRequest request, ISender sender, CancellationToken cancellationToken)
@@ -85,20 +99,31 @@ namespace API.Controllers.Pessoa
                 request.Endereco.Siafi
             );
 
-            var result = await sender.Send(query, cancellationToken);
+            try
+            {
+                var result = await sender.Send(query, cancellationToken);
 
-            return Results.Ok(result);
+                if (result is null)
+                    return Results.BadRequest($"Houve um problema ao atualizar {request.Nome}.");
+
+                return Results.Ok($"{result.Nome} atualizado com sucesso!");
+            }
+            catch (FluentValidation.ValidationException error)
+            {
+                var errors = error.Errors.Select(e => new { e.PropertyName, e.ErrorMessage });
+                return Results.BadRequest(errors);
+            }
         }
 
         public static async Task<IResult> DeletePessoa(Guid id ,ISender sender, CancellationToken cancellationToken)
         {
-            var queryPessoa = new DeletePessoaCommand(id);
-            var resultPessoa = await sender.Send(queryPessoa, cancellationToken);
+            var query = new DeletePessoaCommand(id);
+            var result = await sender.Send(query, cancellationToken);
 
-            if (resultPessoa.Equals(null))
-                return Results.BadRequest();
+            if (result is null)
+                return Results.BadRequest($"Houve um problema ao buscar os dados.");
 
-            return Results.Ok($"{resultPessoa.Nome} Deletado com sucesso");
+            return Results.Ok($"{result.Nome} Deletado com sucesso!");
         }
     }
 }
