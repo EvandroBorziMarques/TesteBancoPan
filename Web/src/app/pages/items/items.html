@@ -4,7 +4,6 @@
   </div>
 </p-toolbar>
 
-<!-- Tabela de Itens -->
 <p-table [value]="items" [paginator]="true" [rows]="5" [responsiveLayout]="'scroll'">
   <ng-template pTemplate="header">
     <tr>
@@ -45,7 +44,6 @@
   </ng-template>
 </p-table>
 
-<!-- Dialog para Criar/Editar -->
 <p-dialog header="{{ item.id ? 'Editar Item' : 'Novo Item' }}" [(visible)]="itemDialog" [modal]="true" [style]="{width: '400px'}">
   <div class="p-fluid">
     <div class="p-field">
@@ -60,7 +58,7 @@
 
     <div class="p-field">
       <label for="tipoPessoa">TipoPessoa</label>
-      <input id="tipoPessoa" type="text" pInputText [(ngModel)]="item.tipoPessoa" required />
+      <input id="tipoPessoa" type="text" pInputText placeholder="1-(PF) 2-(PJ)" [(ngModel)]="item.tipoPessoa" required />
     </div>
 
     <div class="p-field">
@@ -70,7 +68,7 @@
 
     <div class="p-field">
       <label for="dataNascimento">Data de Nascimento</label>
-      <input id="dataNascimento" type="text" pInputText [(ngModel)]="item.dataNascimento" />
+      <input id="dataNascimento" type="text" pInputText placeholder="DD/MM/YYYY" [(ngModel)]="item.dataNascimento" />
     </div>
 
     <div class="p-field">
@@ -95,22 +93,22 @@
 
     <div class="p-field">
       <label for="complemento">Complemento</label>
-      <input id="complemento" type="text" pInputText [(ngModel)]="item.endereco.complemento" required />
+      <input id="complemento" type="text" pInputText [(ngModel)]="item.endereco.complemento" />
     </div>
 
     <div class="p-field">
       <label for="bairro">Bairro</label>
-      <input id="bairro" type="text" pInputText [(ngModel)]="item.endereco.bairro" required />
+      <input id="bairro" type="text" pInputText [(ngModel)]="item.endereco.bairro" />
     </div>
 
     <div class="p-field">
       <label for="uf">UF</label>
-      <input id="uf" type="text" pInputText [(ngModel)]="item.endereco.uf" required />
+      <input id="uf" type="text" pInputText [(ngModel)]="item.endereco.uf" />
     </div>
 
     <div class="p-field">
       <label for="estado">Estado</label>
-      <input id="estado" type="text" pInputText [(ngModel)]="item.endereco.estado" required />
+      <input id="estado" type="text" pInputText [(ngModel)]="item.endereco.estado" />
     </div>
 
   </div>
@@ -118,14 +116,8 @@
     <p-button label="Salvar" icon="pi pi-check" (click)="saveItem()" autofocus></p-button>
     <p-button label="Cancelar" icon="pi pi-times" (click)="itemDialog=false" styleClass="p-button-text"></p-button>
   </div>
-  <!--<p-footer>
-    <p-button label="Salvar" icon="pi pi-check" (click)="saveItem()" autofocus></p-button>
-    <p-button label="Cancelar" icon="pi pi-times" (click)="itemDialog=false" styleClass="p-button-text"></p-button>
-  </p-footer>-->
 </p-dialog>
 
-<!-- Dialog de confirmação de exclusão -->
 <p-confirmDialog></p-confirmDialog>
 
-<!-- Toast para mensagens -->
 <p-toast></p-toast>

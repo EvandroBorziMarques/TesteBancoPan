@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -26,15 +25,5 @@ export class ApiService {
 
   deleteItem(id: string): Observable<any> {
     return this.http.delete(`${this.baseUrl}/pessoa/${id}`);
-  }
-
-  private handleError(error: HttpErrorResponse) {
-    let message = 'Ocorreu um erro!';
-    if (error.error instanceof ErrorEvent) {
-      message = error.error.message;
-    } else if (error.error && error.error.message) {
-      message = error.error.message;
-    }
-    return throwError(() => new Error(message));
   }
 }
